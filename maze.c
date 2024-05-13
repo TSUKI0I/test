@@ -5,6 +5,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "maze.h"
 
 /**
@@ -17,13 +18,27 @@
  */
 int create_maze(maze *this, int height, int width)
 {
-    this = malloc(sizeof(maze));
+    // Dynamically apply a two-dimensional array
+    // with a two-level pointer
+    this->map = (char **)malloc(sizeof(char *) * height);
     if (this == NULL) {
-        printf("Error: Memory allocation failed\n");
+        perror("Error: Memory allocation failed\n");
         return 100;
     }
+    // Open space for each one-dimensional array
+    for (int i = 0; i < height; i++)
+    {
+        this->map [i] = (char*)malloc(sizeof(char) * height);
+        if (this->map [i] == NULL)
+        {
+            perror("Error: Memory allocation failed\n");
+            return 100;
+        }
+    }
+
     this->height = height;
     this->width = width;
+
     return 0;
 }
 
@@ -35,7 +50,13 @@ int create_maze(maze *this, int height, int width)
 void free_maze(maze *this)
 {
     if(this!=NULL){
-        free(this);
+        for (int i = 0; i < this->height; i++)
+        {
+            free(this->map[i]);
+            this->map[i] = NULL;
+        }
+        free(this->map);
+        this->map = NULL;
     }
 }
 
@@ -90,6 +111,22 @@ int get_height(FILE *file)
  */
 int read_maze(maze *this, FILE *file)
 {
+    int i = 0;
+    int width = this->width;
+    char line[width];
+    // Reads the contents of the file line by line
+    while (fgets(line, sizeof(line), file) != NULL){
+        char *subArr = strtok(line, " ");
+        int j = 0;
+        // Traverse each substring after splitting
+        while(subArr!=NULL){
+            this->map[i][j] = *subArr;
+            subArr = strtok(NULL," ");
+            j++;
+        }
+        i++;
+    }
+    return 0;
 }
 
 /**
@@ -100,7 +137,7 @@ int read_maze(maze *this, FILE *file)
  */
 void print_maze(maze *this, coord *player)
 {
-    // make sure we have a leading newline..
+    // make sure we have a leading newline
     printf("\n");
     for (int i = 0; i < this->height; i++)
     {
@@ -130,6 +167,49 @@ void print_maze(maze *this, coord *player)
  */
 void move(maze *this, coord *player, char direction)
 {
+    int x = player->x;
+    int y = player->y;
+    switch (direction) {
+        case 'W':
+        case 'w':
+            --y;
+            break;
+        case 'A':
+        case 'a':
+            --x;
+            break;
+        case 'S':
+        case 's':
+            ++y;
+            break;
+        case 'D':
+        case 'd':
+            ++x;
+            break;
+        case 'Q':
+        case 'q':
+            printf("Quit the game.");
+            break;
+        case 'M':
+        case 'm':
+            print_maze(this,player);
+            break;
+        default:
+            // print in the invalid way
+    }
+
+    // If the player's next step will meet a wall
+    if(this->map[x][y]=='#'){
+        printf("You meet the wall");
+    } else if ( x < 0 || x >= this->width || y < 0 || y >= this->height){
+        printf("You off the edge of the map");
+    } else if(this->map[x][y]=='E'){
+        printf("You win the game");
+    } else{
+        player->x = x;
+        player->y = y;
+    }
+
 }
 
 /**
