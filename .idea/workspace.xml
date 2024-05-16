@@ -10,9 +10,7 @@
     <option name="reloaded" value="true" />
   </component>
   <component name="CMakeRunConfigurationManager">
-    <generated>
-      <config projectName="code" targetName="code" />
-    </generated>
+    <generated />
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -20,11 +18,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ca3c9141-d14d-4f67-ac60-4737adee48ef" name="更改" comment="correct some code, and can print the maze correctly">
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maze.c" beforeDir="false" afterPath="$PROJECT_DIR$/maze.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maze.h" beforeDir="false" />
-    </list>
+    <list default="true" id="ca3c9141-d14d-4f67-ac60-4737adee48ef" name="更改" comment="correct some code, and can print the maze correctly" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,7 +66,6 @@
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "b07f832c",
     "last_opened_file_path": "D:/2/Programming Project/cwk2/code",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -84,13 +77,8 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="C/C++ 文件.maze.c">
+  <component name="RunManager">
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="code" type="CMakeRunConfiguration" factoryName="Application" singleton="false" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="code" TARGET_NAME="code" CONFIG_NAME="Debug" RUN_PATH="$PROJECT_DIR$/maze.c">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -102,10 +90,6 @@
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="C/C++ 文件.maze.c" />
-      <item itemvalue="CMake 应用程序.code" />
-    </list>
     <recent_temporary>
       <list>
         <item itemvalue="C/C++ 文件.maze.c" />
@@ -131,7 +115,7 @@
       <workItem from="1715562173208" duration="13764000" />
       <workItem from="1715759347731" duration="2815000" />
       <workItem from="1715762870578" duration="11587000" />
-      <workItem from="1715860787901" duration="3768000" />
+      <workItem from="1715860787901" duration="6276000" />
     </task>
     <task id="LOCAL-00001" summary="add maze.h">
       <option name="closed" value="true" />
