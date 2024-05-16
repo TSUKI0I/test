@@ -1,0 +1,265 @@
+Index: maze.c
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/**\r\n * @file maze.c\r\n * @author Xinyue Wu\r\n * @brief Code for the maze game for COMP1921 Assignment 2\r\n */\r\n#include <stdio.h>\r\n#include <stdlib.h>\r\n#include <string.h>\r\n#include \"maze.h\"\r\n\r\n/**\r\n * @brief Initialise a maze object - allocate memory and set attributes\r\n *\r\n * @param this pointer to the maze to be initialised\r\n * @param height height to allocate\r\n * @param width width to allocate\r\n * @return int 0 on success, 1 on fail\r\n */\r\nint create_maze(maze *this, int height, int width)\r\n{\r\n    // Dynamically apply a two-dimensional array\r\n    // with a two-level pointer\r\n    this->map = (char **)malloc(sizeof(char *) * height);\r\n    if (this == NULL) {\r\n        perror(\"Error: Memory allocation failed\\n\");\r\n        return 100;\r\n    }\r\n    // Open space for each one-dimensional array\r\n    for (int i = 0; i < height; i++)\r\n    {\r\n        this->map [i] = (char*)malloc(sizeof(char) * height);\r\n        if (this->map [i] == NULL)\r\n        {\r\n            perror(\"Error: Memory allocation failed\\n\");\r\n            return 100;\r\n        }\r\n    }\r\n\r\n    this->height = height;\r\n    this->width = width;\r\n\r\n    return 0;\r\n}\r\n\r\n/**\r\n * @brief Free the memory allocated to the maze struct\r\n *\r\n * @param this the pointer to the struct to free\r\n */\r\nvoid free_maze(maze *this)\r\n{\r\n    if(this!=NULL){\r\n        for (int i = 0; i < this->height; i++)\r\n        {\r\n            free(this->map[i]);\r\n            this->map[i] = NULL;\r\n        }\r\n        free(this->map);\r\n        this->map = NULL;\r\n    }\r\n}\r\n\r\n/**\r\n * @brief Validate and return the width of the maze file\r\n *\r\n * @param file the file pointer to check\r\n * @return int 0 for error, or a valid width (5-100)\r\n */\r\nint get_width(FILE *file)\r\n{\r\n    char c;\r\n    int width = 0;\r\n    while ((c= fgetc(file))!='\\n'){\r\n        width++;\r\n    }\r\n    if(width>=5 && width<=100){\r\n        return width;\r\n    } else{\r\n        return 3;\r\n    }\r\n}\r\n\r\n/**\r\n * @brief Validate and return the height of the mazefile\r\n *\r\n * @param file the file pointer to check\r\n * @return int 0 for error, or a valid height (5-100)\r\n */\r\nint get_height(FILE *file)\r\n{\r\n    char c;\r\n    int height = 0;\r\n    while ((c= fgetc(file))!=EOF){\r\n        if(c=='\\n'){\r\n            height++;\r\n        }\r\n    }\r\n    if(height>=5 && height<=100){\r\n        return height;\r\n    } else{\r\n        return 3;\r\n    }\r\n}\r\n\r\n/**\r\n * @brief read in a maze file into a struct\r\n *\r\n * @param this Maze struct to be used\r\n * @param file Maze file pointer\r\n * @return int 0 on success, 1 on fail\r\n */\r\nint read_maze(maze *this, FILE *file)\r\n{\r\n    int i = 0;\r\n    int width = this->width;\r\n    char line[width];\r\n    // Reads the contents of the file line by line\r\n    while (fgets(line, sizeof(line), file) != NULL){\r\n        char *subArr = strtok(line, \" \");\r\n        int j = 0;\r\n        // Traverse each substring after splitting\r\n        while(subArr!=NULL){\r\n            this->map[i][j] = *subArr;\r\n            subArr = strtok(NULL,\" \");\r\n            j++;\r\n        }\r\n        i++;\r\n    }\r\n    return 0;\r\n}\r\n\r\n/**\r\n * @brief Prints the maze out - code provided to ensure correct formatting\r\n *\r\n * @param this pointer to maze to print\r\n * @param player the current player location\r\n */\r\nvoid print_maze(maze *this, coord *player)\r\n{\r\n    // make sure we have a leading newline\r\n    printf(\"\\n\");\r\n    for (int i = 0; i < this->height; i++)\r\n    {\r\n        for (int j = 0; j < this->width; j++)\r\n        {\r\n            // decide whether player is on this spot or not\r\n            if (player->x == j && player->y == i)\r\n            {\r\n                printf(\"X\");\r\n            }\r\n            else\r\n            {\r\n                printf(\"%c\", this->map[i][j]);\r\n            }\r\n        }\r\n        // end each row with a newline.\r\n        printf(\"\\n\");\r\n    }\r\n}\r\n\r\n/**\r\n * @brief Validates and performs a movement in a given direction\r\n *\r\n * @param this Maze struct\r\n * @param player The player's current position\r\n * @param direction The desired direction to move in\r\n */\r\nvoid move(maze *this, coord *player, char direction)\r\n{\r\n    int x = player->x;\r\n    int y = player->y;\r\n    switch (direction) {\r\n        case 'W':\r\n        case 'w':\r\n            --y;\r\n            break;\r\n        case 'A':\r\n        case 'a':\r\n            --x;\r\n            break;\r\n        case 'S':\r\n        case 's':\r\n            ++y;\r\n            break;\r\n        case 'D':\r\n        case 'd':\r\n            ++x;\r\n            break;\r\n        case 'Q':\r\n        case 'q':\r\n            printf(\"Quit the game.\");\r\n            break;\r\n        case 'M':\r\n        case 'm':\r\n            print_maze(this,player);\r\n            break;\r\n        default:\r\n            // print in the invalid way\r\n    }\r\n\r\n    // If the player's next step will meet a wall\r\n    if(this->map[x][y]=='#'){\r\n        printf(\"You meet the wall\");\r\n    } else if ( x < 0 || x >= this->width || y < 0 || y >= this->height){\r\n        printf(\"You off the edge of the map\");\r\n    } else if(this->map[x][y]=='E'){\r\n        printf(\"You win the game\");\r\n    } else{\r\n        player->x = x;\r\n        player->y = y;\r\n    }\r\n\r\n}\r\n\r\n/**\r\n * @brief Check whether the player has won and return a pseudo-boolean\r\n *\r\n * @param this current maze\r\n * @param player player position\r\n * @return int 0 for false, 1 for true\r\n */\r\nint has_won(maze *this, coord *player)\r\n{\r\n}\r\n\r\nint main()\r\n{\r\n    // check args\r\n\r\n    // set up some useful variables (you can rename or remove these if you want)\r\n    coord *player;\r\n    maze *this_maze = malloc(sizeof(maze));\r\n    FILE *f;\r\n\r\n    // open and validate mazefile\r\n\r\n    // read in mazefile to struct\r\n\r\n    // maze game loop\r\n\r\n    // win\r\n\r\n    // return, free, exit\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/maze.c b/maze.c
+--- a/maze.c	
++++ b/maze.c	
+@@ -6,8 +6,32 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include "maze.h"
++// defines for max and min permitted dimensions
++#define MAX_DIM 100
++#define MIN_DIM 5
++
++// defines for the required auto grader exit codes
++#define EXIT_SUCCESS 0
++#define EXIT_ARG_ERROR 1
++#define EXIT_FILE_ERROR 2
++#define EXIT_MAZE_ERROR 3
+ 
++#define MAX_LINE_LENGTH 256
++
++typedef struct Coord
++{
++    int x;
++    int y;
++} coord;
++
++typedef struct Maze
++{
++    char **map;
++    int height;
++    int width;
++    coord start;
++    coord end;
++} maze;
+ /**
+  * @brief Initialise a maze object - allocate memory and set attributes
+  *
+@@ -23,7 +47,7 @@
+     this->map = (char **)malloc(sizeof(char *) * height);
+     if (this == NULL) {
+         perror("Error: Memory allocation failed\n");
+-        return 100;
++        return 1;
+     }
+     // Open space for each one-dimensional array
+     for (int i = 0; i < height; i++)
+@@ -32,7 +56,7 @@
+         if (this->map [i] == NULL)
+         {
+             perror("Error: Memory allocation failed\n");
+-            return 100;
++            return 1;
+         }
+     }
+ 
+@@ -68,37 +92,40 @@
+  */
+ int get_width(FILE *file)
+ {
+-    char c;
+     int width = 0;
+-    while ((c= fgetc(file))!='\n'){
++    int ch;
++    while ((ch=fgetc(file))!='\n' && ch!=EOF){
+         width++;
+     }
+-    if(width>=5 && width<=100){
++    if(width>=MIN_DIM && width<=MAX_DIM){
+         return width;
+     } else{
+-        return 3;
++        return 0;
+     }
+ }
+ 
+ /**
+- * @brief Validate and return the height of the mazefile
++ * @brief Validate and return the height of the maze file
+  *
+  * @param file the file pointer to check
+  * @return int 0 for error, or a valid height (5-100)
+  */
+ int get_height(FILE *file)
+ {
+-    char c;
++    //Move the file pointer to the start of the file
++    fseek(file, 0, SEEK_SET);
++    int ch;
+     int height = 0;
+-    while ((c= fgetc(file))!=EOF){
+-        if(c=='\n'){
++    while ((ch= fgetc(file))!=EOF){
++        if(ch =='\n'){
+             height++;
+         }
+     }
+-    if(height>=5 && height<=100){
++    height++;
++    if(height>=MIN_DIM && height<=MAX_DIM){
+         return height;
+     } else{
+-        return 3;
++        return 0;
+     }
+ }
+ 
+@@ -111,18 +138,22 @@
+  */
+ int read_maze(maze *this, FILE *file)
+ {
++    fseek(file, 0, SEEK_SET);
+     int i = 0;
+     int width = this->width;
+-    char line[width];
++    char line[MAX_LINE_LENGTH];
+     // Reads the contents of the file line by line
+     while (fgets(line, sizeof(line), file) != NULL){
+-        char *subArr = strtok(line, " ");
+-        int j = 0;
+-        // Traverse each substring after splitting
+-        while(subArr!=NULL){
+-            this->map[i][j] = *subArr;
+-            subArr = strtok(NULL," ");
+-            j++;
++        // Check every row has the same length
++        for (int j = 0; j < width; ++j) {
++            this->map[i][j]=line[j];
++            if(line[j]=='S'){
++                this->start.x=i;
++                this->start.y=j;
++            }else if(line[j]=='E'){
++                this->end.x=i;
++                this->end.y=j;
++            }
+         }
+         i++;
+     }
+@@ -196,6 +227,7 @@
+             break;
+         default:
+             // print in the invalid way
++            printf("Invalid input,please try again");
+     }
+ 
+     // If the player's next step will meet a wall
+@@ -203,8 +235,6 @@
+         printf("You meet the wall");
+     } else if ( x < 0 || x >= this->width || y < 0 || y >= this->height){
+         printf("You off the edge of the map");
+-    } else if(this->map[x][y]=='E'){
+-        printf("You win the game");
+     } else{
+         player->x = x;
+         player->y = y;
+@@ -221,25 +251,81 @@
+  */
+ int has_won(maze *this, coord *player)
+ {
++    int x = player->x;
++    int y = player->y;
++    if(this->map[x][y]=='E'){
++        printf("You win the game");
++        return 1;
++    } else{
++        return 0;
++    }
++}
++/**
++ * @brief Check whether the maze is valid
++ *
++ * @param this current unchecked maze
++ * @return int 0 for valid, int 1 for invalid
++ */
++int checkMaze(maze *this)
++{
++    int sNum = 0;
++    int eNum = 0;
++    for (int i = 0; i < this->width; ++i) {
++        for (int j = 0; j < this->height; ++j) {
++            if(this->map[i][j]=='S'){
++                sNum++;
++            } else if(this->map[i][j]=='E'){
++                eNum++;
++            } else if(this->map[i][j]!=' '&&this->map[i][j]!='#'&&this->map[i][j]!='\n'){
++                return 1;
++            }
++
++        }
++    }
++    if(sNum!=1||eNum!=1){
++        return 1;
++    }
++
++    return 0;
+ }
+ 
+-int main()
++int main(int argc, char *argv[])
+ {
+     // check args
+-
++    if(argc!=2){
++        return EXIT_ARG_ERROR;
++    }
+     // set up some useful variables (you can rename or remove these if you want)
+     coord *player;
+-    maze *this_maze = malloc(sizeof(maze));
+-    FILE *f;
++    maze *maze=malloc(sizeof(*maze));
++    FILE *file;
+ 
+-    // open and validate mazefile
++    // open and validate maze file
++    file = fopen(argv[1],"r");
++    if(!file){
++        return EXIT_FILE_ERROR;
++    }
+ 
+-    // read in mazefile to struct
++    // read in maze file to struct
++    int width= get_width(file);
++    int height= get_height(file);
+ 
++    create_maze(maze,height,width);
++    read_maze(maze,file);
++    fclose(file);
++    //将player放在S处
++    player = &maze->start;
++    print_maze(maze,player);
+     // maze game loop
++//    char direction;
++//    scanf(" %c", &direction);
++//    move(maze,player,direction);
++
+ 
+     // win
+ 
+     // return, free, exit
++    free_maze(maze);
++    return EXIT_SUCCESS;
+ }
+ 
+Index: CMakeLists.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>cmake_minimum_required(VERSION 3.26)\r\nproject(code C)\r\n\r\nset(CMAKE_C_STANDARD 11)\r\n\r\nadd_library(code maze.c\r\n        maze.h)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	
++++ b/CMakeLists.txt	
+@@ -4,4 +4,4 @@
+ set(CMAKE_C_STANDARD 11)
+ 
+ add_library(code maze.c
+-        maze.h)
++)

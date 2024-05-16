@@ -23,7 +23,7 @@ int create_maze(maze *this, int height, int width)
     this->map = (char **)malloc(sizeof(char *) * height);
     if (this == NULL) {
         perror("Error: Memory allocation failed\n");
-        return 1;
+        return 100;
     }
     // Open space for each one-dimensional array
     for (int i = 0; i < height; i++)
@@ -32,7 +32,7 @@ int create_maze(maze *this, int height, int width)
         if (this->map [i] == NULL)
         {
             perror("Error: Memory allocation failed\n");
-            return 1;
+            return 100;
         }
     }
 
@@ -68,15 +68,15 @@ void free_maze(maze *this)
  */
 int get_width(FILE *file)
 {
+    char c;
     int width = 0;
-    int ch;
-    while ((ch=fgetc(file))!='\n'&&ch!=EOF){
+    while ((c= fgetc(file))!='\n'){
         width++;
     }
-    if(width>=MIN_DIM && width<=MAX_DIM){
+    if(width>=5 && width<=100){
         return width;
     } else{
-        return 0;
+        return 3;
     }
 }
 
@@ -88,17 +88,17 @@ int get_width(FILE *file)
  */
 int get_height(FILE *file)
 {
-    int ch;
+    char c;
     int height = 0;
-    while ((ch= fgetc(file))!=EOF){
-        if(ch=='\n'){
+    while ((c= fgetc(file))!=EOF){
+        if(c=='\n'){
             height++;
         }
     }
-    if(height>=MIN_DIM && height<=MAX_DIM){
+    if(height>=5 && height<=100){
         return height;
     } else{
-        return 0;
+        return 3;
     }
 }
 
@@ -115,16 +115,14 @@ int read_maze(maze *this, FILE *file)
     int width = this->width;
     char line[width];
     // Reads the contents of the file line by line
-    while (fgets(line, width, file) != NULL){
-        for (int j = 0; j < width; ++j) {
-            this->map[i][j]=line[j];
-            if(line[j]=='S'){
-                this->start.x=i;
-                this->start.y=j;
-            }else if(line[j]=='E'){
-                this->end.x=i;
-                this->end.y=j;
-            }
+    while (fgets(line, sizeof(line), file) != NULL){
+        char *subArr = strtok(line, " ");
+        int j = 0;
+        // Traverse each substring after splitting
+        while(subArr!=NULL){
+            this->map[i][j] = *subArr;
+            subArr = strtok(NULL," ");
+            j++;
         }
         i++;
     }
@@ -198,7 +196,6 @@ void move(maze *this, coord *player, char direction)
             break;
         default:
             // print in the invalid way
-            printf("Invalid input,please try again");
     }
 
     // If the player's next step will meet a wall
@@ -206,6 +203,8 @@ void move(maze *this, coord *player, char direction)
         printf("You meet the wall");
     } else if ( x < 0 || x >= this->width || y < 0 || y >= this->height){
         printf("You off the edge of the map");
+    } else if(this->map[x][y]=='E'){
+        printf("You win the game");
     } else{
         player->x = x;
         player->y = y;
@@ -222,42 +221,21 @@ void move(maze *this, coord *player, char direction)
  */
 int has_won(maze *this, coord *player)
 {
-    int x = player->x;
-    int y = player->y;
-    if(this->map[x][y]=='E'){
-        printf("You win the game");
-        return 1;
-    } else{
-        return 0;
-    }
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     // check args
-    if(argc!=1){
-        return EXIT_ARG_ERROR;
-    }
+
     // set up some useful variables (you can rename or remove these if you want)
-    coord *player = NULL;
-    maze *maze=NULL;
-    FILE *file;
+    coord *player;
+    maze *this_maze = malloc(sizeof(maze));
+    FILE *f;
 
-    // open and validate maze file
-    file = fopen(argv[0],"r");
-    if(!file){
-        return EXIT_FILE_ERROR;
-    }
+    // open and validate mazefile
 
-    // read in maze file to struct
-    int width= get_width(file);
-    int height= get_height(file);
-    create_maze(maze,height,width);
-    read_maze(maze,file);
-    fclose(file);
-    // 将player放在S处
-    *player = maze->start;
-    print_maze(maze,player);
+    // read in mazefile to struct
+
     // maze game loop
 
     // win
