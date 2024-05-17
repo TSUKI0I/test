@@ -5,7 +5,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+
 #ifndef TOTAL_CODE_CW2_MAIN_H
 #define TOTAL_CODE_CW2_MAIN_H
 
@@ -113,7 +113,7 @@ int get_width(FILE *file)
 }
 
 /**
- * @brief Validate and return the height of the mazefile
+ * @brief Validate and return the height of the maze file
  *
  * @param file the file pointer to check
  * @return int 0 for error, or a valid height (5-100)
@@ -147,23 +147,36 @@ int read_maze(maze *this, FILE *file)
 {
     fseek(file, 0, SEEK_SET);
     int i = 0;
+    int numS = 0;
+    int numE = 0;
     int width = this->width;
     char line[MAX_WIDTH];
     // Reads the contents of the file line by line
     while (fgets(line, (int)sizeof (line), file) != NULL){
         for (int j = 0; j < width; ++j) {
             this->map[i][j]=line[j];
+            // contain only specific char
             if(line[j]=='S'){
                 this->start.x=i;
                 this->start.y=j;
+                numS++;
             }else if(line[j]=='E'){
                 this->end.x=i;
                 this->end.y=j;
+                numE++;
             }else if (line[j]!=' '&&line[j]!='#'&&line[j]!='\n'){
                 return 1;
             }
         }
         i++;
+    }
+    // Judge whether it has single 'S' and 'E'
+    if(numS != 1 || numE!=1){
+        return 1;
+    }
+    // Has every column the same height
+    if(i!=this->height){
+        return 1;
     }
     return 0;
 }
@@ -235,6 +248,7 @@ void move(maze *this, coord *player, char direction)
             break;
         default:
             // print in the invalid way
+            printf("");
     }
 
     // If the player's next step will meet a wall
@@ -286,18 +300,29 @@ int main(int argc, char *argv[])
         return EXIT_FILE_ERROR;
     }
 
-    // read in maze file to struct
     int width= get_width(file);
     int height= get_height(file);
-    create_maze(maze,height,width);
-    read_maze(maze,file);
+    if(width==0||height==0){
+        fclose(file);
+        free(maze);
+        return EXIT_MAZE_ERROR;
+    }
+    if (create_maze(maze, height, width) != 0) {
+        free(maze);
+        fclose(file);
+        return EXIT_MAZE_ERROR;
+    }
+
+    if (read_maze(maze, file) != 0) {
+        free_maze(maze);
+        free(maze);
+        fclose(file);
+        return EXIT_MAZE_ERROR;
+    }
     fclose(file);
     // 将player放在S处
     player = &maze->start;
     print_maze(maze,player);
-    // open and validate maze file
-
-    // read in maze file to struct
 
     // maze game loop
 

@@ -18,7 +18,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ca3c9141-d14d-4f67-ac60-4737adee48ef" name="更改" comment="correct some code, and can print the maze correctly" />
+    <list default="true" id="ca3c9141-d14d-4f67-ac60-4737adee48ef" name="更改" comment="correct some code, and can print the maze correctly">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maze.c" beforeDir="false" afterPath="$PROJECT_DIR$/maze.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maze.exe" beforeDir="false" afterPath="$PROJECT_DIR$/maze.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maze.txt" beforeDir="false" afterPath="$PROJECT_DIR$/maze.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,6 +71,7 @@
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
     "last_opened_file_path": "D:/2/Programming Project/cwk2/code",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -78,11 +84,6 @@
   }
 }]]></component>
   <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="maze.c" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="code" TARGET_NAME="maze.c - MinGW" CONFIG_NAME="maze.c">
       <option name="sourceFile" value="maze.c" />
       <option name="toolchainName" value="MinGW" />
@@ -115,7 +116,8 @@
       <workItem from="1715562173208" duration="13764000" />
       <workItem from="1715759347731" duration="2815000" />
       <workItem from="1715762870578" duration="11587000" />
-      <workItem from="1715860787901" duration="6276000" />
+      <workItem from="1715860787901" duration="6866000" />
+      <workItem from="1715934020943" duration="2727000" />
     </task>
     <task id="LOCAL-00001" summary="add maze.h">
       <option name="closed" value="true" />
