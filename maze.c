@@ -120,15 +120,52 @@ int get_width(FILE *file)
  */
 int get_height(FILE *file)
 {
+    int numS = 0;
+    int numE = 0;
     fseek(file, 0, SEEK_SET);
     int ch;
     int height = 0;
     while ((ch= fgetc(file))!=EOF){
         if(ch=='\n'){
             height++;
+        } else if (ch=='S'){
+            numS++;
+        } else if (ch=='E'){
+            numE++;
+        }else if (ch!=' '&&ch!='#'){
+            return 0;
         }
     }
     height++;
+    fseek(file, 0, SEEK_SET);
+    // Check the maze is a rectangle
+    int lineWidth = 0;
+    int eachWidth[height];
+    int i = 0;
+    while ((ch= fgetc(file))!=EOF){
+        if(ch=='\n'){
+            eachWidth[i]=lineWidth;
+            i++;
+            lineWidth = 0;
+        } else{
+            lineWidth++;
+        }
+    }
+    // The last line has no newline
+    if(lineWidth>0){
+        eachWidth[i]=lineWidth;
+    }
+    printf("%d\n",eachWidth[4]);
+    for (int j = 0; j < height-1; ++j) {
+        if(eachWidth[j]!=eachWidth[j+1]){
+            printf("a\n");
+            return 0;
+        }
+    }
+    // Judge whether it has single 'S' and 'E'
+    if(numS != 1 || numE!=1){
+        return 0;
+    }
     if(height>=MIN_DIM && height<=MAX_DIM){
         return height;
     } else{
@@ -147,8 +184,6 @@ int read_maze(maze *this, FILE *file)
 {
     fseek(file, 0, SEEK_SET);
     int i = 0;
-    int numS = 0;
-    int numE = 0;
     int width = this->width;
     char line[MAX_WIDTH];
     // Reads the contents of the file line by line
@@ -159,24 +194,12 @@ int read_maze(maze *this, FILE *file)
             if(line[j]=='S'){
                 this->start.x=i;
                 this->start.y=j;
-                numS++;
             }else if(line[j]=='E'){
                 this->end.x=i;
                 this->end.y=j;
-                numE++;
-            }else if (line[j]!=' '&&line[j]!='#'&&line[j]!='\n'){
-                return 1;
             }
         }
         i++;
-    }
-    // Judge whether it has single 'S' and 'E'
-    if(numS != 1 || numE!=1){
-        return 1;
-    }
-    // Has every column the same height
-    if(i!=this->height){
-        return 1;
     }
     return 0;
 }
@@ -303,6 +326,7 @@ int main(int argc, char *argv[])
     int width= get_width(file);
     int height= get_height(file);
     if(width==0||height==0){
+        printf("0");
         fclose(file);
         free(maze);
         return EXIT_MAZE_ERROR;
@@ -313,12 +337,7 @@ int main(int argc, char *argv[])
         return EXIT_MAZE_ERROR;
     }
 
-    if (read_maze(maze, file) != 0) {
-        free_maze(maze);
-        free(maze);
-        fclose(file);
-        return EXIT_MAZE_ERROR;
-    }
+    read_maze(maze,file);
     fclose(file);
     // 将player放在S处
     player = &maze->start;
