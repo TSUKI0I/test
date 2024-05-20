@@ -19,6 +19,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ca3c9141-d14d-4f67-ac60-4737adee48ef" name="更改" comment="correct some code, and can print the maze correctly">
+      <change afterPath="$PROJECT_DIR$/broken_wall.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/maze.c" beforeDir="false" afterPath="$PROJECT_DIR$/maze.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/maze.exe" beforeDir="false" afterPath="$PROJECT_DIR$/maze.exe" afterDir="false" />
@@ -119,6 +120,9 @@
       <workItem from="1715860787901" duration="6866000" />
       <workItem from="1715934020943" duration="2882000" />
       <workItem from="1716105152578" duration="3518000" />
+      <workItem from="1716130126474" duration="604000" />
+      <workItem from="1716208424853" duration="6621000" />
+      <workItem from="1716217256415" duration="481000" />
     </task>
     <task id="LOCAL-00001" summary="add maze.h">
       <option name="closed" value="true" />

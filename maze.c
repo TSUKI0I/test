@@ -152,13 +152,11 @@ int get_height(FILE *file)
         }
     }
     // The last line has no newline
-    if(lineWidth>0){
+    if(lineWidth > 0){
         eachWidth[i]=lineWidth;
     }
-    printf("%d\n",eachWidth[4]);
     for (int j = 0; j < height-1; ++j) {
         if(eachWidth[j]!=eachWidth[j+1]){
-            printf("a\n");
             return 0;
         }
     }
@@ -192,11 +190,11 @@ int read_maze(maze *this, FILE *file)
             this->map[i][j]=line[j];
             // contain only specific char
             if(line[j]=='S'){
-                this->start.x=i;
-                this->start.y=j;
+                this->start.x=j;
+                this->start.y=i;
             }else if(line[j]=='E'){
-                this->end.x=i;
-                this->end.y=j;
+                this->end.x=j;
+                this->end.y=i;
             }
         }
         i++;
@@ -269,18 +267,19 @@ void move(maze *this, coord *player, char direction)
         case 'm':
             print_maze(this,player);
             break;
+        case '\n':
+            break;
         default:
             // print in the invalid way
-            printf("");
+            printf("Invalid input, please try again\n");
+            break;
     }
 
     // If the player's next step will meet a wall
-    if(this->map[x][y]=='#'){
-        printf("You meet the wall");
+    if(this->map[y][x]=='#'){
+        printf("You meet the wall\n");
     } else if ( x < 0 || x >= this->width || y < 0 || y >= this->height){
-        printf("You off the edge of the map");
-    } else if(this->map[x][y]=='E'){
-        printf("You win the game");
+        printf("You off the edge of the map\n");
     } else{
         player->x = x;
         player->y = y;
@@ -299,7 +298,7 @@ int has_won(maze *this, coord *player)
 {
     int x = player->x;
     int y = player->y;
-    if(this->map[x][y]=='E'){
+    if(this->map[y][x]=='E'){
         printf("You win the game");
         return 1;
     } else{
@@ -344,9 +343,12 @@ int main(int argc, char *argv[])
     print_maze(maze,player);
 
     // maze game loop
+    char input;
 
-    // win
-
+    do{
+        scanf("%c",&input);
+        move(maze,player,input);
+    } while (has_won(maze,player)!=1);
     // return, free, exit
     free_maze(maze);
     return EXIT_SUCCESS;
