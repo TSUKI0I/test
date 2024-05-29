@@ -19,36 +19,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ca3c9141-d14d-4f67-ac60-4737adee48ef" name="更改" comment="correct some code, and can print the maze correctly">
-      <change afterPath="$PROJECT_DIR$/create_maze.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/create_maze.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/free_maze.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/free_maze.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mazegen.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mazegen.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/move.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/move.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/read_maze.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/read_maze.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testdata/mazes/bad/bad_height.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testdata/mazes/bad/bad_width.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testdata/mazes/bad/invalid_chars_5x5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testdata/mazes/bad/ireg_width_5x5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testdata/mazes/good/15x9.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testdata/mazes/good/5x5.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testdata/mazes/good/closed.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testdata/mazes/good/open.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024-05-16_20_13____1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024-05-16_20_28____.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行合并之前于_2024-05-16_20_13_取消提交了更改_[更改]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行签出之前于_2024-05-16_20_28_取消提交了更改_[更改]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broken_wall.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/makefile" beforeDir="false" afterPath="$PROJECT_DIR$/makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/maze.c" beforeDir="false" afterPath="$PROJECT_DIR$/maze.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maze.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/maze.h" beforeDir="false" afterPath="$PROJECT_DIR$/maze.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maze.txt" beforeDir="false" afterPath="$PROJECT_DIR$/maze.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +136,7 @@
       <workItem from="1716472326870" duration="80000" />
       <workItem from="1716883574732" duration="75000" />
       <workItem from="1716899923826" duration="3974000" />
-      <workItem from="1716944426843" duration="25942000" />
+      <workItem from="1716944426843" duration="28923000" />
     </task>
     <task id="LOCAL-00001" summary="add maze.h">
       <option name="closed" value="true" />

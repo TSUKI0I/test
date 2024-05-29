@@ -29,14 +29,13 @@ int main(int argc, char *argv[])
     int width= get_width(file);
     int height= get_height(file);
     if(width==0||height==0){
-        printf("0");
         fclose(file);
         free(maze);
         return EXIT_MAZE_ERROR;
     }
     if (create_maze(maze, height, width) != 0) {
-        free(maze);
         fclose(file);
+        free(maze);
         return EXIT_MAZE_ERROR;
     }
 
@@ -44,8 +43,6 @@ int main(int argc, char *argv[])
     fclose(file);
 
     player = &maze->start;
-    print_maze(maze,player);
-
     // maze game loop
     char input;
 
@@ -59,12 +56,14 @@ int main(int argc, char *argv[])
             printf("Invalid input. Please enter only one character.\n");
             continue;
         } else if(input=='Q'||input=='q'){
-            printf("Quit the game.");
-            free_maze(maze);
-            return EXIT_SUCCESS;
+            printf("Quit the game.\n");
+            break;
         }
         move(maze,player,input);
-    } while (has_won(maze,player)!=1);
+        if(has_won(maze,player)==1){
+            break;
+        }
+    } while (1);
     // return, free, exit
     free_maze(maze);
     return EXIT_SUCCESS;
