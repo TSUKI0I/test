@@ -1,12 +1,15 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99
+EXECUTABLE = maze
+SOURCES = $(wildcard *.c)
+OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 
+all: $(EXECUTABLE)
 
-SRCS = $(wildcard *.c)
-OBJS = $(SRCS:.c=.o)
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) -o $@ $^
 
-maze: $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+%.o: %.c
+	$(CC) -c $<
 
 clean:
-	rm -f maze $(OBJS)
+	rm -f *.o $(EXECUTABLE)
