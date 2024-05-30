@@ -64,6 +64,8 @@ int get_height(FILE *file)
     // The last line has no newline
     if(lineWidth > 0){
         eachWidth[i]=lineWidth;
+    } else{
+        height--;
     }
     for (int j = 0; j < height-1; ++j) {
         if(eachWidth[j]!=eachWidth[j+1]){
